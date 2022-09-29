@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">AlbertsonsChallenge</string>
+    <string name="search_an_acronym">Search an Acronym</string>
+    <string name="search_for_an_acronym">Search for an acronym:</string>
+    <string name="search">Search</string>
+</resources>
