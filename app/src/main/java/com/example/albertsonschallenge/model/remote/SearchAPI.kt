@@ -6,8 +6,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class SearchAPI {
-    val api: SearchService by lazy { initRetrofit() }
+object SearchAPI {
+    val api: SearchService by lazy{
+        initRetrofit()
+    }
 
     private fun initRetrofit(): SearchService {
         return Retrofit.Builder().client(getOKHTTPClient()).baseUrl(BASE_URL)
@@ -21,4 +23,17 @@ class SearchAPI {
         else okhttpLogging.level = HttpLoggingInterceptor.Level.NONE
         return OkHttpClient.Builder().addInterceptor(okhttpLogging).build()
     }
+
+//    private fun initRetrofit(): SearchService{
+//        return Retrofit.Builder()
+//            .baseUrl(BASE_URL)
+//            .addConverterFactory(MoshiConverterFactory.create())
+//            .build()
+//            .create(SearchService::class.java)
+//    }
 }
+
+//class SearchAPI {
+//    val api: SearchService by lazy { initRetrofit() }
+//
+//}

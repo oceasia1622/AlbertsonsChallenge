@@ -8,19 +8,14 @@ import com.example.albertsonschallenge.view.AcronymLongformFragment
 import com.example.albertsonschallenge.viewmodel.AcronymSearchScreenViewModel
 
 class MainActivity : AppCompatActivity() {
-//    private lateinit var viewModel: AcronymSearchScreenViewModel
-    private lateinit var binding: ActivityMainBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
 
-        if(findViewById<FragmentContainerView>(R.id.container) != null)
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container,
-                    AcronymLongformFragment())
-                .commit()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container,
+                AcronymLongformFragment())
+            .commit()
     }
 
 //        viewModel.uiState.observe(this)

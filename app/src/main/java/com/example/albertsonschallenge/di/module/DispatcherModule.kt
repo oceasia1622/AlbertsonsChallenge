@@ -6,9 +6,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
 
-@InstallIn(SingletonComponent::class)
-@Module
-object DispatcherModule {
-    @Provides
-    fun provideIODispatcher() = Dispatchers.IO
-}
+//@InstallIn(SingletonComponent::class)
+//@Module
+//object DispatcherModule {
+//    @Provides
+//    fun provideIODispatcher() = Dispatchers.IO
+//}

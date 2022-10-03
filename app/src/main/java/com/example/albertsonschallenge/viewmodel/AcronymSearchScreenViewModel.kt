@@ -3,41 +3,50 @@ package com.example.albertsonschallenge.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.albertsonschallenge.model.Repository
-import com.example.albertsonschallenge.model.UIState
-import com.example.albertsonschallenge.model.remote.AcronymLongforms
-import com.example.albertsonschallenge.model.remote.Acronyms
-import com.example.albertsonschallenge.model.remote.SearchAPI
-import com.example.albertsonschallenge.model.remote.SearchService
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.example.albertsonschallenge.model.remote.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import javax.inject.Inject
 
-@HiltViewModel
-class AcronymSearchScreenViewModel @Inject constructor(
-    private val repository: Repository,
-) : ViewModel() {
-    private val _searchResult = MutableLiveData<AcronymLongforms>() // MLDO
-    val searchResult: LiveData<AcronymLongforms> // ILDO
-        get() = searchResult
+//@HiltViewModel
+//class AcronymSearchScreenViewModel @Inject constructor(
+//    private val repository: Repository,
+//    private val dispatcher: CoroutineDispatcher
+//) : ViewModel() {
+//    private val _searchResult = MutableLiveData<AcronymLongforms>()
+//    val searchResult: LiveData<AcronymLongforms>
+//        get() = _searchResult
+//
+//    private val customCoroutineScope = CoroutineScope(Dispatchers.IO)
+//
+//    fun searchAcronym(acronymSearch: String) {
+//        viewModelScope.launch(dispatcher) {
+//            repository.getAcronym(acronymSearch).collect { _searchResult.value }
+//        }
+//    }
+//
+//    override fun onCleared() {
+//        super.onCleared()
+//        customCoroutineScope.cancel()
+//    }
+//}
 
-    private val _errorMessages = MutableLiveData("") // MLDO
-    val errorMessages: LiveData<String> // ILDO
+class AcronymSearchScreenViewModel : ViewModel() {
+    private val _searchResult = MutableLiveData<test>()
+    val searchResult: LiveData<test>
+        get() = _searchResult
+
+    private val _errorMessages = MutableLiveData("")
+    val errorMessages: LiveData<String>
         get() = _errorMessages
 
     fun searchAcronym(acronym: String) {
-        getAcronym(acronym)
+        SearchAPI.api.getAcronymList(acronym)
             .enqueue(
-                object : Callback<AcronymLongforms> {
+                object : Callback<test> {
                     override fun onResponse(
-                        call: Call<AcronymLongforms>,
-                        response: Response<AcronymLongforms>
+                        call: Call<test>,
+                        response: Response<test>
                     ) {
                         if (response.isSuccessful) {
                             response.body()?.let {
@@ -50,7 +59,7 @@ class AcronymSearchScreenViewModel @Inject constructor(
                         }
                     }
                     override fun onFailure(
-                        call: Call<AcronymLongforms>,
+                        call: Call<test>,
                         t: Throwable
                     ) {
                         t.printStackTrace()
@@ -60,25 +69,3 @@ class AcronymSearchScreenViewModel @Inject constructor(
             )
     }
 }
-//@HiltViewModel
-//class AcronymSearchScreenViewModel @Inject constructor(
-//    private val repository: Repository,
-//    private val dispatcher: CoroutineDispatcher
-//) : ViewModel() {
-//    private val _uiState = MutableLiveData<List<AcronymLongforms>>()
-//    val uiState: LiveData<List<AcronymLongforms>>
-//        get() = _uiState
-//
-//    private val customCoroutineScope = CoroutineScope(Dispatchers.IO)
-//
-//    fun searchAcronyms(acronymSearch: String) {
-//        viewModelScope.launch(dispatcher) {
-//            repository.getAcronym(acronymSearch).collect { _uiState.value }
-//        }
-//    }
-//
-//    override fun onCleared() {
-//        super.onCleared()
-//        customCoroutineScope.cancel()
-//    }
-//}
