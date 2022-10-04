@@ -6,7 +6,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-object SearchAPI {
+class SearchAPI {
     val api: SearchService by lazy{
         initRetrofit()
     }
@@ -24,16 +24,4 @@ object SearchAPI {
         return OkHttpClient.Builder().addInterceptor(okhttpLogging).build()
     }
 
-//    private fun initRetrofit(): SearchService{
-//        return Retrofit.Builder()
-//            .baseUrl(BASE_URL)
-//            .addConverterFactory(MoshiConverterFactory.create())
-//            .build()
-//            .create(SearchService::class.java)
-//    }
 }
-
-//class SearchAPI {
-//    val api: SearchService by lazy { initRetrofit() }
-//
-//}

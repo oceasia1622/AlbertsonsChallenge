@@ -11,15 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.albertsonschallenge.databinding.SearchResultsBinding
 import com.example.albertsonschallenge.model.remote.SearchResponse
-import com.example.albertsonschallenge.model.remote.test
-import com.example.albertsonschallenge.model.remote.testItem
 import com.example.albertsonschallenge.view.adapters.SearchScreenAdapter
 import com.example.albertsonschallenge.viewmodel.AcronymSearchScreenViewModel
 
 class AcronymLongformFragment: Fragment() {
     private lateinit var binding: SearchResultsBinding
     private lateinit var adapter: SearchScreenAdapter
-    private val test = test()
+    private val acronymItem = SearchResponse()
 
     private val viewModel: AcronymSearchScreenViewModel by lazy{
         ViewModelProvider(this)[AcronymSearchScreenViewModel::class.java]
@@ -39,6 +37,7 @@ class AcronymLongformFragment: Fragment() {
 
         initObservables()
         initViews()
+
         return binding.root
     }
 
@@ -62,13 +61,12 @@ class AcronymLongformFragment: Fragment() {
                 }
             }
         )
-        adapter = SearchScreenAdapter(test){}
+        adapter = SearchScreenAdapter(acronymItem){}
         binding.rvlfs.adapter = adapter
         binding.rvlfs.layoutManager = LinearLayoutManager(context)
     }
 
-    private fun updateAdapter(dataSet: test) {
+    private fun updateAdapter(dataSet: SearchResponse) {
         adapter.updateList(dataSet)
-//        adapter.submitList(dataSet)
     }
 }

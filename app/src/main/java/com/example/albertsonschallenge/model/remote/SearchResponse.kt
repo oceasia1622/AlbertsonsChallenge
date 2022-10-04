@@ -1,28 +1,21 @@
 package com.example.albertsonschallenge.model.remote
 
-import android.os.Parcelable
-import com.example.albertsonschallenge.model.AcronymItem
-import kotlinx.parcelize.Parcelize
+class SearchResponse : ArrayList<AcronymItem>()
 
-data class SearchResponse(
-    val acronyms: List<AcronymItem>
+data class AcronymItem(
+    val lfs: List<Lf>,
+    val sf: String
 )
 
-//@Parcelize
-//data class Acronyms(
-//    val sf: String,
-//    val lfs: List<AcronymLongforms>
-//) : Parcelable
-//@Parcelize
-//data class AcronymLongforms(
-//    val lf: String,
-//    val freq: String,
-//    val since: String,
-//    val vars: List<Variation>
-//) : Parcelable
-//@Parcelize
-//data class Variation(
-//    val lf: String,
-//    val freq: String,
-//    val since: String
-//) : Parcelable
+data class Lf(
+    val freq: Int,
+    val lf: String,
+    val since: Int,
+    val vars: List<Vars>
+)
+
+data class Vars(
+    val freq: Int,
+    val lf: String,
+    val since: Int
+)

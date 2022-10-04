@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.albertsonschallenge.databinding.LongformsDisplayBinding
-import com.example.albertsonschallenge.model.AcronymItem
 import com.example.albertsonschallenge.model.remote.test
 import com.example.albertsonschallenge.model.remote.testItem
 
