@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface SearchService {
     @GET(END_POINT)
-    fun getAcronymList(
+    suspend fun getAcronymList(
         @Query(Q_ARGS) searchInput: String
     ): Response<SearchResponse>
 }

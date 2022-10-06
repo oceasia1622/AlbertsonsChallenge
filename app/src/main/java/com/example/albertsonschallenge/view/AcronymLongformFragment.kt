@@ -4,23 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.albertsonschallenge.databinding.SearchResultsBinding
 import com.example.albertsonschallenge.model.UIState
-import com.example.albertsonschallenge.model.remote.AcronymItem
-import com.example.albertsonschallenge.model.remote.SearchResponse
+import com.example.albertsonschallenge.model.remote.Vars
 import com.example.albertsonschallenge.view.adapters.SearchScreenAdapter
 import com.example.albertsonschallenge.viewmodel.AcronymSearchScreenViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class AcronymLongformFragment: Fragment() {
 
     private lateinit var binding: SearchResultsBinding
-    private lateinit var adapter: SearchScreenAdapter
-    private lateinit var acronymItem: SearchResponse
+    private lateinit var screenAdapter: SearchScreenAdapter
 
     private val viewModel: AcronymSearchScreenViewModel by lazy{
         ViewModelProvider(requireActivity())[AcronymSearchScreenViewModel::class.java]
@@ -36,15 +35,25 @@ class AcronymLongformFragment: Fragment() {
             layoutInflater
         )
 
-        initObservables()
         initViews()
+        initObservables()
 
         return binding.root
     }
 
     private fun initObservables() {
-        viewModel.searchResult.observe(viewLifecycleOwner) {
-
+        viewModel.searchState.observe(viewLifecycleOwner) {
+            when(it) {
+                is UIState.Error -> {
+                    showError(it.errorMessage)
+                }
+                is UIState.Response -> {
+                    binding.rvlfs.adapter = screenAdapter
+                    binding.rvlfs.layoutManager = LinearLayoutManager(context)
+                    screenAdapter.updateList(it.success[0].lfs)
+                }
+                else -> { }
+            }
         }
     }
 
@@ -62,16 +71,22 @@ class AcronymLongformFragment: Fragment() {
                 }
             }
         )
-        adapter = SearchScreenAdapter(acronymItem, ::searchDetails)
-        binding.rvlfs.adapter = adapter
-        binding.rvlfs.layoutManager = LinearLayoutManager(context)
+        screenAdapter = SearchScreenAdapter(searchDetails = ::searchDetails)
     }
 
-    private fun updateAdapter(dataSet: SearchResponse?) {
-        adapter.submitList(dataSet!![0].lfs)
+    private fun showError(errorMessage: String) {
+        Snackbar.make(
+            binding.root,
+            errorMessage,
+            Snackbar.LENGTH_INDEFINITE
+        ).setAction("Dismiss") {}.show()
     }
 
-    private fun searchDetails(item: AcronymItem) {
-        //todo
+    private fun searchDetails(vars: List<Vars>) {
+        val displayVarsNames = vars.map { it.lf }
+        Toast.makeText(
+            context,
+            "Variations\n${displayVarsNames.joinToString("\n")}",
+            Toast.LENGTH_LONG).show()
     }
 }
