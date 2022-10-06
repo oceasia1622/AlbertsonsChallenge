@@ -1,21 +1,29 @@
 package com.example.albertsonschallenge.model
 
+import android.util.Log
 import com.example.albertsonschallenge.model.remote.SearchAPI
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class RepositoryImplementation constructor(private val searchService: SearchAPI) : Repository {
+class RepositoryImplementation @Inject constructor(private val searchService: SearchAPI) : Repository {
+
     override fun getAcronym(
         acronymSearch: String
     ): Flow<UIState> {
         return flow {
-            val response = searchService.api.getAcronymList()
+            val response = searchService.api.getAcronymList(acronymSearch)
             emit(UIState.Loading())
-            delay(600)
             if (response.isSuccessful) {
-                response.body()?.let { emit(UIState.Response(it)) } ?: emit(UIState.Empty)
-            } else emit(Error(response.message()))
+                Log.d("*****", "getAcronym: Successful")
+                response.body()?.let {
+                    emit(UIState.Response(it))
+                } ?: emit(UIState.Empty)
+            } else {
+                Log.d("*****", "getAcronym: ERROR")
+                emit(UIState.Error(response.message()))
+            }
         }
     }
 }

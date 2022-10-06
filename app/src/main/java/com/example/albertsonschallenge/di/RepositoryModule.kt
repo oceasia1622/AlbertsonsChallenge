@@ -8,9 +8,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 
-@InstallIn(ViewModelComponent::class)
-@Module
-class RepositoryModule {
-    @Provides
-    fun provideRepository(network: SearchAPI): Repository = RepositoryImplementation(network)
-}
+//@InstallIn(ViewModelComponent::class)
+//@Module
+//class RepositoryModule {
+
+//}

@@ -6,14 +6,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.albertsonschallenge.databinding.LongformsDisplayBinding
-import com.example.albertsonschallenge.model.remote.test
-import com.example.albertsonschallenge.model.remote.testItem
+import com.example.albertsonschallenge.model.remote.AcronymItem
+import com.example.albertsonschallenge.model.remote.Lf
+import com.example.albertsonschallenge.model.remote.SearchResponse
 
-class SearchScreenAdapter(private var currentList: test, private var searchDetails: (testItem) -> Unit):
-    ListAdapter<test, SearchScreenAdapter.LongformViewHolder>(LongformDiffUtil) {
+class SearchScreenAdapter(private var currentList: SearchResponse, private var searchDetails: (AcronymItem) -> Unit):
+    ListAdapter<Lf, SearchScreenAdapter.LongformViewHolder>(LongformDiffUtil) {
     class LongformViewHolder(private val binding: LongformsDisplayBinding):
         RecyclerView.ViewHolder(binding.root){
-        fun onBind(dataItem: testItem, openData: (testItem) -> Unit) {
+        fun onBind(dataItem: AcronymItem, openData: (AcronymItem) -> Unit) {
             binding.Llongform.text = dataItem.lfs.first().lf
             binding.Lfrequency.text = dataItem.lfs.first().freq.toString()
             binding.Lsince.text = dataItem.lfs.first().since.toString()
@@ -21,12 +22,12 @@ class SearchScreenAdapter(private var currentList: test, private var searchDetai
         }
     }
 
-    object LongformDiffUtil: DiffUtil.ItemCallback<test>(){
-        override fun areItemsTheSame(oldItem: test, newItem: test): Boolean {
+    object LongformDiffUtil: DiffUtil.ItemCallback<Lf>(){
+        override fun areItemsTheSame(oldItem: Lf, newItem: Lf): Boolean {
             return oldItem == newItem
         }
-        override fun areContentsTheSame(oldItem: test, newItem: test): Boolean {
-            return oldItem.first().lfs.first().lf == newItem.first().lfs.first().lf
+        override fun areContentsTheSame(oldItem: Lf, newItem: Lf): Boolean {
+            return oldItem.lf == newItem.lf
         }
     }
 
@@ -42,10 +43,6 @@ class SearchScreenAdapter(private var currentList: test, private var searchDetai
         holder.onBind(currentList[position], searchDetails)
     }
 
-    fun updateList(response: test){
-        currentList = response
-        notifyDataSetChanged()
-    }
 }
 
 //class SearchScreenAdapter(private val openDetails: (String) -> Unit) :

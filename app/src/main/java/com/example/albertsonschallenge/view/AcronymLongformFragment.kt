@@ -10,17 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.albertsonschallenge.databinding.SearchResultsBinding
+import com.example.albertsonschallenge.model.UIState
+import com.example.albertsonschallenge.model.remote.AcronymItem
 import com.example.albertsonschallenge.model.remote.SearchResponse
 import com.example.albertsonschallenge.view.adapters.SearchScreenAdapter
 import com.example.albertsonschallenge.viewmodel.AcronymSearchScreenViewModel
 
 class AcronymLongformFragment: Fragment() {
+
     private lateinit var binding: SearchResultsBinding
     private lateinit var adapter: SearchScreenAdapter
-    private val acronymItem = SearchResponse()
+    private lateinit var acronymItem: SearchResponse
 
     private val viewModel: AcronymSearchScreenViewModel by lazy{
-        ViewModelProvider(this)[AcronymSearchScreenViewModel::class.java]
+        ViewModelProvider(requireActivity())[AcronymSearchScreenViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -30,9 +33,7 @@ class AcronymLongformFragment: Fragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = SearchResultsBinding.inflate(
-            inflater,
-            container,
-            false
+            layoutInflater
         )
 
         initObservables()
@@ -42,9 +43,9 @@ class AcronymLongformFragment: Fragment() {
     }
 
     private fun initObservables() {
-        viewModel.searchResult.observe(viewLifecycleOwner, Observer {
-            updateAdapter(it)
-        })
+        viewModel.searchResult.observe(viewLifecycleOwner) {
+
+        }
     }
 
     private fun initViews() {
@@ -61,12 +62,16 @@ class AcronymLongformFragment: Fragment() {
                 }
             }
         )
-        adapter = SearchScreenAdapter(acronymItem){}
+        adapter = SearchScreenAdapter(acronymItem, ::searchDetails)
         binding.rvlfs.adapter = adapter
         binding.rvlfs.layoutManager = LinearLayoutManager(context)
     }
 
-    private fun updateAdapter(dataSet: SearchResponse) {
-        adapter.updateList(dataSet)
+    private fun updateAdapter(dataSet: SearchResponse?) {
+        adapter.submitList(dataSet!![0].lfs)
+    }
+
+    private fun searchDetails(item: AcronymItem) {
+        //todo
     }
 }

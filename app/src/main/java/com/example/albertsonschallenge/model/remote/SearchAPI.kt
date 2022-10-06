@@ -4,6 +4,7 @@ import com.example.albertsonschallenge.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class SearchAPI {
@@ -13,7 +14,7 @@ class SearchAPI {
 
     private fun initRetrofit(): SearchService {
         return Retrofit.Builder().client(getOKHTTPClient()).baseUrl(BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create()).build()
+            .addConverterFactory(GsonConverterFactory.create()).build()
             .create(SearchService::class.java)
     }
 
@@ -23,5 +24,4 @@ class SearchAPI {
         else okhttpLogging.level = HttpLoggingInterceptor.Level.NONE
         return OkHttpClient.Builder().addInterceptor(okhttpLogging).build()
     }
-
 }
